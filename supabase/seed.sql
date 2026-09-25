@@ -1,0 +1,10 @@
+-- =====================================================================
+-- Bug Busters – question bank seed
+--
+-- The original 16 sample questions were removed from this seed file.
+-- Migration 007_replace_question_bank.sql creates the production question bank
+-- (25 coding + 20 SQL) with complete judge configuration and hidden tests.
+--
+-- Keeping this file empty makes `supabase db reset` deterministic: migrations
+-- build the exact bank and no old sample rows are appended afterwards.
+-- =====================================================================

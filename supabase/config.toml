@@ -1,0 +1,36 @@
+# Supabase CLI settings for the Edge Functions.
+#
+# Participants never sign in, so the four functions cannot require a JWT.
+# Each one protects itself instead: strict input checks, a secret attempt
+# token, and all scoring / timing rules enforced inside the database.
+# (See the header of supabase/functions/_shared/util.ts.)
+
+[functions.start-attempt]
+verify_jwt = false
+
+[functions.get-attempt]
+verify_jwt = false
+
+[functions.submit-answer]
+verify_jwt = false
+
+[functions.finish-attempt]
+verify_jwt = false
+
+[functions.save-code]
+verify_jwt = false
+
+[functions.execute-code]
+verify_jwt = false
+
+[functions.submit-code]
+verify_jwt = false
+
+[functions.save-sql]
+verify_jwt = false
+
+[functions.execute-sql]
+verify_jwt = false
+
+[functions.submit-sql]
+verify_jwt = false

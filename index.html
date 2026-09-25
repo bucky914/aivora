@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bug Busters – AIVORA 2K26</title>
+  <meta name="description" content="Bug Busters at AIVORA 2K26: a coding and DSA challenge.">
+  <meta name="theme-color" content="#050914">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="home-main">
+
+    <!-- Seven walls of the Chakravyuha. Decorative only. -->
+    <svg class="formation" viewBox="0 0 800 800" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false">
+      <circle class="ring" style="--i:0;--from:-40deg;--to:100deg" cx="400" cy="400" r="360" stroke-dasharray="2036 226"/>
+      <circle class="ring" style="--i:1;--from:130deg;--to:330deg" cx="400" cy="400" r="310" stroke-dasharray="1753 195"/>
+      <circle class="ring" style="--i:2;--from:80deg;--to:200deg" cx="400" cy="400" r="260" stroke-dasharray="1470 163"/>
+      <circle class="ring" style="--i:3;--from:-130deg;--to:50deg" cx="400" cy="400" r="210" stroke-dasharray="1188 132"/>
+      <circle class="ring" style="--i:4;--from:180deg;--to:280deg" cx="400" cy="400" r="160" stroke-dasharray="905 101"/>
+      <circle class="ring" style="--i:5;--from:-10deg;--to:150deg" cx="400" cy="400" r="110" stroke-dasharray="622 69"/>
+      <circle class="ring" style="--i:6;--from:-200deg;--to:20deg" cx="400" cy="400" r="60" stroke-dasharray="339 38"/>
+      <circle cx="400" cy="400" r="7" fill="currentColor" stroke="none"/>
+    </svg>
+
+    <div class="home-inner">
+      <header class="hero">
+        <p class="hero-event">AIVORA 2K26</p>
+        <h1 class="hero-title">BUG BUSTERS</h1>
+        <p class="hero-sub">CODING • DEBUGGING • DSA CHALLENGE</p>
+      </header>
+
+      <form id="start-form" class="start-card" novalidate aria-label="Start the contest">
+        <p id="form-error" class="form-error" role="alert" hidden></p>
+
+        <div class="field">
+          <label class="field-label" for="name">Name</label>
+          <input id="name" name="name" class="input" type="text"
+                 placeholder="Enter your name" autocomplete="off" spellcheck="false"
+                 maxlength="80" aria-describedby="name-error" required>
+          <p id="name-error" class="field-error"></p>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="participant-no">Participant Number</label>
+          <input id="participant-no" name="participant_no" class="input" type="text"
+                 placeholder="Enter participant number" autocomplete="off" autocapitalize="characters"
+                 spellcheck="false" maxlength="30" aria-describedby="no-error" required>
+          <p id="no-error" class="field-error"></p>
+        </div>
+
+        <button id="start-btn" class="btn btn-primary btn-block" type="submit">START NOW</button>
+
+        <p class="start-note">
+          You get 45 minutes for 10 coding problems — 5 easy and 5 medium. The clock starts when you press START NOW.
+        </p>
+      </form>
+    </div>
+  </main>
+
+  <noscript>
+    <p style="position:fixed;inset:auto 1rem 1rem;padding:1rem;background:#091225;border:1px solid #ff6b81;border-radius:8px">
+      This contest needs JavaScript. Please turn it on and reload.
+    </p>
+  </noscript>
+
+  <script src="js/supabase.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

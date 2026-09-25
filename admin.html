@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin – Bug Busters | AIVORA 2K26</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#091225">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-page">
+
+  <!-- ============================== Sign in ============================== -->
+  <main id="login" class="login" hidden>
+    <form id="login-form" class="login-card" novalidate>
+      <img src="assets/logo.svg" alt="" width="44" height="44">
+      <h1>Admin sign in</h1>
+      <p class="login-sub">Bug Busters | AIVORA 2K26</p>
+
+      <div class="field">
+        <label for="login-email">Email</label>
+        <input class="input" id="login-email" type="email" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="login-password">Password</label>
+        <input class="input" id="login-password" type="password" autocomplete="current-password" required>
+      </div>
+
+      <p id="login-error" class="form-error" role="alert" hidden></p>
+      <button id="login-btn" class="btn btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+  </main>
+
+  <!-- ============================== Dashboard ============================ -->
+  <div id="dash" class="dash" hidden>
+
+    <header class="adminbar">
+      <div class="brand">
+        <img src="assets/logo.svg" alt="" width="28" height="28">
+        <span class="brand-name">BUG BUSTERS</span>
+        <span class="brand-event">ADMIN</span>
+      </div>
+      <nav class="admintabs" role="tablist" aria-label="Admin sections">
+        <button id="atab-results" class="atab" role="tab" type="button" data-view="results" aria-selected="true">Results</button>
+        <button id="atab-questions" class="atab" role="tab" type="button" data-view="questions" aria-selected="false" tabindex="-1">Questions</button>
+      </nav>
+      <div class="adminbar-right">
+        <span id="admin-email" class="admin-email"></span>
+        <button id="signout-btn" class="btn btn-ghost btn-small" type="button">Sign out</button>
+      </div>
+    </header>
+
+    <!-- ---------------------------- Results view --------------------------- -->
+    <section id="view-results" class="view" role="tabpanel" aria-labelledby="atab-results">
+
+      <div class="cards" id="cards">
+        <div class="stat"><span class="stat-label">Total participants</span><span id="s-participants" class="stat-value">–</span></div>
+        <div class="stat"><span class="stat-label">Active attempts</span><span id="s-active" class="stat-value">–</span></div>
+        <div class="stat"><span class="stat-label">Completed</span><span id="s-completed" class="stat-value">–</span></div>
+        <div class="stat"><span class="stat-label">Expired</span><span id="s-expired" class="stat-value">–</span></div>
+        <div class="stat"><span class="stat-label">Problems solved</span><span id="s-solved" class="stat-value">–</span></div>
+        <div class="stat"><span class="stat-label">Average score</span><span id="s-avg" class="stat-value">–</span></div>
+      </div>
+
+      <div class="toolbar">
+        <div class="field field-inline">
+          <label for="search">Search</label>
+          <input class="input" id="search" type="search" placeholder="Name or participant number" autocomplete="off">
+        </div>
+        <div class="field field-inline">
+          <label for="status-filter">Status</label>
+          <select class="select" id="status-filter">
+            <option value="">All</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+            <option value="expired">Expired</option>
+          </select>
+        </div>
+        <div class="toolbar-right">
+          <span id="updated" class="updated" role="status"></span>
+          <button id="refresh-btn" class="btn btn-ghost btn-small" type="button">Refresh</button>
+          <button id="csv-btn" class="btn btn-ghost btn-small" type="button">Export CSV</button>
+        </div>
+      </div>
+
+      <div class="table-wrap" tabindex="0" aria-label="Results table">
+        <table class="results">
+          <thead>
+            <tr>
+              <th data-sort="rank" scope="col">#</th>
+              <th data-sort="name" scope="col">Name</th>
+              <th data-sort="participant_no" scope="col">Number</th>
+              <th data-sort="started_at" scope="col">Start</th>
+              <th data-sort="ended_at" scope="col">End</th>
+              <th data-sort="coding_solved" scope="col" class="num">Coding solved</th>
+              <th data-sort="total_solved" scope="col" class="num">Total solved</th>
+              <th data-sort="coding_score" scope="col" class="num">Coding score</th>
+              <th data-sort="total_score" scope="col" class="num">Total score</th>
+              <th data-sort="status" scope="col">Status</th>
+              <th scope="col"><span class="sr-only">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody id="results-body"></tbody>
+        </table>
+        <p id="results-empty" class="empty" hidden>No attempts match.</p>
+      </div>
+    </section>
+
+    <!-- --------------------------- Questions view -------------------------- -->
+    <section id="view-questions" class="view" role="tabpanel" aria-labelledby="atab-questions" hidden>
+
+      <div id="bank-health" class="bank-health" role="status"></div>
+
+      <div class="toolbar">
+        <div class="field field-inline">
+          <label for="q-cat">Category</label>
+          <select class="select" id="q-cat">
+            <option value="">All</option>
+            <option value="coding">Coding (DSA)</option>
+          </select>
+        </div>
+        <div class="field field-inline">
+          <label for="q-diff">Difficulty</label>
+          <select class="select" id="q-diff">
+            <option value="">All</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+          </select>
+        </div>
+        <div class="field field-inline">
+          <label for="q-search">Search</label>
+          <input class="input" id="q-search" type="search" placeholder="Title" autocomplete="off">
+        </div>
+        <div class="toolbar-right">
+          <button id="q-add" class="btn btn-primary btn-small" type="button">Add question</button>
+        </div>
+      </div>
+
+      <div class="table-wrap" tabindex="0" aria-label="Questions table">
+        <table class="questions">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Category</th>
+              <th scope="col">Difficulty</th>
+              <th scope="col" class="num">Points</th>
+              <th scope="col">Enabled</th>
+              <th scope="col"><span class="sr-only">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody id="q-body"></tbody>
+        </table>
+        <p id="q-empty" class="empty" hidden>No questions match.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================== Add / edit question dialog ===================== -->
+  <dialog id="q-dialog" class="wide" aria-labelledby="q-dialog-title">
+    <form id="q-form" class="dialog-body" novalidate>
+      <h2 id="q-dialog-title">Add question</h2>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="f-category">Category</label>
+          <select class="select" id="f-category">
+            <option value="coding">Coding (DSA)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-difficulty">Difficulty</label>
+          <select class="select" id="f-difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="f-title">Title</label>
+        <input class="input" id="f-title" type="text" maxlength="200" required>
+      </div>
+      <div class="field">
+        <label for="f-description">Description</label>
+        <textarea class="textarea" id="f-description" rows="6" required></textarea>
+        <p class="help">Blank line = new paragraph. Wrap code in `backticks`, or a block in three backticks.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="f-input">Input format <span class="opt">(optional)</span></label>
+          <textarea class="textarea" id="f-input" rows="3"></textarea>
+        </div>
+        <div class="field">
+          <label for="f-output">Output format <span class="opt">(optional)</span></label>
+          <textarea class="textarea" id="f-output" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="f-examples">Examples <span class="opt">(JSON)</span></label>
+        <textarea id="f-examples" rows="7" class="textarea mono" spellcheck="false"></textarea>
+        <p class="help">A list, for example <code>[{"input":"n = 3","output":"6","explanation":"1+2+3"}]</code></p>
+      </div>
+
+      <div class="field">
+        <label for="f-constraints">Constraints <span class="opt">(optional)</span></label>
+        <textarea class="textarea" id="f-constraints" rows="3"></textarea>
+      </div>
+      <div class="field">
+        <label for="f-starter">Starter text in the editor <span class="opt">(optional)</span></label>
+        <textarea id="f-starter" rows="3" class="textarea mono" spellcheck="false"></textarea>
+      </div>
+
+      <label class="check"><input id="f-active" type="checkbox" checked> Enabled (can be given to new participants)</label>
+
+      <p id="q-form-error" class="form-error" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button id="q-cancel" class="btn btn-ghost" type="button">Cancel</button>
+        <button id="q-save" class="btn btn-primary" type="submit">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ===================== Generic confirm dialog ===================== -->
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title">
+    <form method="dialog" class="dialog-body">
+      <h2 id="confirm-title">Are you sure?</h2>
+      <p id="confirm-text"></p>
+      <div class="dialog-actions">
+        <button class="btn btn-ghost" value="cancel">Cancel</button>
+        <button id="confirm-ok" class="btn btn-danger" value="ok">Confirm</button>
+      </div>
+    </form>
+  </dialog>
+
+  <noscript>
+    <p style="position:fixed;inset:auto 1rem 1rem;padding:1rem;background:#091225;border:1px solid #ff6b81;border-radius:8px">
+      The admin page needs JavaScript. Please turn it on and reload.
+    </p>
+  </noscript>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

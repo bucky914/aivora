@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contest – Bug Busters | AIVORA 2K26</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#091225">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/contest.css">
+</head>
+<body class="contest-page">
+
+  <!-- Shown while the attempt loads from the server -->
+  <div id="boot" class="boot" role="status">
+    <p id="boot-text">Loading your contest…</p>
+    <button id="boot-retry" class="btn btn-ghost" type="button" hidden>Try again</button>
+  </div>
+
+  <div id="app" class="app" hidden>
+
+    <header class="topbar">
+      <div class="brand">
+        <img src="assets/logo.svg" alt="" width="28" height="28">
+        <span class="brand-name">BUG BUSTERS</span>
+        <span class="brand-sep" aria-hidden="true">|</span>
+        <span class="brand-event">AIVORA 2K26</span>
+      </div>
+
+      <div class="who">
+        <span id="who-name" class="who-name"></span>
+        <span id="who-no" class="who-no"></span>
+      </div>
+
+      <p id="progress-text" class="progress"></p>
+
+      <button id="finish-btn" class="btn btn-ghost btn-small" type="button">Finish contest</button>
+
+      <div class="clock" role="timer" aria-label="Time remaining">
+        <span class="clock-label">TIME REMAINING</span>
+        <span id="clock" class="clock-value">45:00</span>
+      </div>
+    </header>
+
+    <nav class="tabs" aria-label="Question sets">
+      <div class="tablist" role="tablist" aria-label="Question type">
+        <button id="tab-coding" class="tab" role="tab" type="button" data-cat="coding" aria-controls="workspace" aria-selected="true">
+          CODING (DSA)<span id="count-coding" class="tab-count"></span>
+        </button>
+        <button id="tab-sql" class="tab" role="tab" type="button" data-cat="sql" aria-controls="workspace" aria-selected="false" tabindex="-1" hidden aria-hidden="true">
+          SQL<span id="count-sql" class="tab-count"></span>
+        </button>
+      </div>
+      <div id="qnav" class="qnav" role="group" aria-label="Questions"></div>
+    </nav>
+
+    <main id="workspace" class="workspace" role="tabpanel">
+      <section id="problem-pane" class="pane problem" aria-label="Problem" tabindex="0"></section>
+
+      <!-- SQL / plain-text answer pane (existing workflow, unchanged) -->
+      <section id="answer-pane" class="pane answer" aria-label="Your answer">
+        <div class="answer-head">
+          <label id="answer-label" class="answer-label" for="answer-input">Your solution</label>
+          <span id="save-status" class="save-status" role="status"></span>
+        </div>
+
+        <textarea id="answer-input" class="answer-input" spellcheck="false" autocapitalize="off"
+                  autocomplete="off" autocorrect="off" wrap="off" aria-describedby="answer-hint"></textarea>
+
+        <div class="answer-foot">
+          <p id="answer-hint" class="answer-hint"></p>
+          <span id="char-count" class="char-count"></span>
+          <button id="solve-btn" class="btn btn-primary" type="button">Mark as Solved</button>
+        </div>
+      </section>
+
+      <!-- Coding (DSA) workspace: LeetCode-style Monaco editor + test panel -->
+      <section id="code-pane" class="pane code-pane" aria-label="Code editor" hidden>
+        <div class="code-toolbar">
+          <label class="code-lang-label" for="code-lang">Language:</label>
+          <select id="code-lang" class="code-lang-select" aria-label="Programming language">
+            <option value="python3">Python 3</option>
+            <option value="java">Java</option>
+            <option value="cpp">C++</option>
+            <option value="c">C</option>
+          </select>
+          <span id="code-save-status" class="save-status" role="status"></span>
+          <div class="code-toolbar-actions">
+            <button id="run-btn" class="btn btn-ghost btn-small" type="button">Run Code</button>
+            <button id="submit-btn" class="btn btn-primary btn-small" type="button">Submit</button>
+          </div>
+        </div>
+
+        <div id="monaco-container" class="monaco-container" aria-label="Code editor, write your solution function"></div>
+
+        <div class="test-panel">
+          <div class="test-panel-tabs" role="tablist" aria-label="Test panel">
+            <button id="test-tab-cases" class="test-tab" role="tab" type="button" aria-selected="true">Test Cases</button>
+            <button id="test-tab-result" class="test-tab" role="tab" type="button" aria-selected="false">Test Result</button>
+          </div>
+          <div id="test-cases-view" class="test-panel-body"></div>
+          <div id="test-result-view" class="test-panel-body" hidden>
+            <p id="test-result-empty" class="test-empty">Run your code to see results here.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SQL workspace: LeetCode-style Monaco SQL editor + test panel -->
+      <section id="sql-pane" class="pane code-pane" aria-label="SQL editor" hidden>
+        <div class="code-toolbar">
+          <label class="code-lang-label" for="sql-lang">Language:</label>
+          <select id="sql-lang" class="code-lang-select" aria-label="SQL dialect">
+            <option value="postgresql">PostgreSQL</option>
+            <option value="sql">SQL</option>
+          </select>
+          <span id="sql-save-status" class="save-status" role="status"></span>
+          <div class="code-toolbar-actions">
+            <button id="sql-run-btn" class="btn btn-ghost btn-small" type="button">Run Code</button>
+            <button id="sql-submit-btn" class="btn btn-primary btn-small" type="button">Submit</button>
+          </div>
+        </div>
+
+        <div id="sql-monaco-container" class="monaco-container" aria-label="SQL editor, write your query"></div>
+
+        <div class="test-panel">
+          <div class="test-panel-tabs" role="tablist" aria-label="SQL test panel">
+            <button id="sql-test-tab-cases" class="test-tab" role="tab" type="button" aria-selected="true">Test Cases</button>
+            <button id="sql-test-tab-result" class="test-tab" role="tab" type="button" aria-selected="false">Test Result</button>
+          </div>
+          <div id="sql-test-cases-view" class="test-panel-body"></div>
+          <div id="sql-test-result-view" class="test-panel-body" hidden>
+            <p id="sql-test-result-empty" class="test-empty">Run your query to see results here.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Final result -->
+  <section id="result" class="result" hidden aria-labelledby="result-title">
+    <div class="result-card">
+      <p class="result-event">BUG BUSTERS | AIVORA 2K26</p>
+      <h1 id="result-title" class="result-title">Contest Completed</h1>
+      <p id="result-note" class="result-note"></p>
+
+      <dl class="result-list">
+        <div><dt>Name</dt><dd id="r-name"></dd></div>
+        <div><dt>Participant No</dt><dd id="r-no"></dd></div>
+        <div><dt>Coding Solved</dt><dd id="r-coding-solved"></dd></div>
+        <div><dt>Total Solved</dt><dd id="r-total-solved"></dd></div>
+      </dl>
+
+      <a id="home-link" class="btn btn-ghost" href="index.html">Back to home</a>
+    </div>
+  </section>
+
+  <!-- Blocks the screen while fullscreen/security state is resolved. -->
+  <div id="overlay" class="overlay" hidden>
+    <div class="overlay-card" role="dialog" aria-modal="true" aria-labelledby="overlay-msg">
+      <p id="overlay-msg"></p>
+      <div class="overlay-actions">
+        <button id="overlay-action" class="btn btn-primary" type="button" hidden>Continue Contest</button>
+        <button id="overlay-submit" class="btn btn-danger" type="button" hidden>Submit Contest</button>
+      </div>
+    </div>
+  </div>
+
+  <dialog id="finish-dialog" aria-labelledby="finish-title">
+    <form method="dialog" class="dialog-body">
+      <h2 id="finish-title">Finish the contest now?</h2>
+      <p id="finish-summary">Your answers will be locked. You cannot change them afterwards.</p>
+      <div class="dialog-actions">
+        <button class="btn btn-ghost" value="cancel">Keep working</button>
+        <button class="btn btn-primary" value="finish">Finish now</button>
+      </div>
+    </form>
+  </dialog>
+
+  <noscript>
+    <p style="position:fixed;inset:auto 1rem 1rem;padding:1rem;background:#091225;border:1px solid #ff6b81;border-radius:8px">
+      This contest needs JavaScript. Please turn it on and reload.
+    </p>
+  </noscript>
+
+  <!-- Monaco Editor (loaded only when a coding or SQL question needs it — see js/code-editor.js, js/sql-editor.js) -->
+  <script>window.MONACO_CDN_BASE = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min';</script>
+
+  <script src="js/supabase.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/code-editor.js"></script>
+  <script src="js/sql-editor.js"></script>
+  <script src="js/contest.js"></script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+/* Admin dashboard. Shares tokens/components with style.css.
+ * This is an operations tool: dense, calm, easy to scan in a busy hall. */
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.admin-page { min-height: 100dvh; }
+.admin-page [hidden] { display: none !important; }
+
+/* ---------- Sign in ---------- */
+
+.login { min-height: 100dvh; display: grid; place-items: center; padding: 1.25rem; }
+.login-card {
+  width: min(100%, 24rem); display: grid; gap: 1rem; justify-items: stretch;
+  padding: 2rem 1.75rem; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 14px;
+}
+.login-card img { justify-self: center; }
+.login-card h1 { font-family: var(--font-display); font-size: 1.9rem; text-align: center; line-height: 1.1; }
+.login-sub { margin: -.5rem 0 .25rem; text-align: center; color: var(--gold); font-family: var(--font-display); letter-spacing: .12em; }
+
+/* ---------- Top bar ---------- */
+
+.adminbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.25rem;
+  padding: .6rem clamp(.75rem, 2vw, 1.5rem);
+  background: var(--surface); border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 5;
+}
+.adminbar .brand { display: flex; align-items: center; gap: .6rem; white-space: nowrap; }
+.adminbar .brand-name { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; letter-spacing: .08em; }
+.adminbar .brand-event {
+  font-family: var(--font-display); font-weight: 600; font-size: .85rem; letter-spacing: .14em;
+  color: var(--gold-ink); background: var(--gold); padding: .1rem .5rem; border-radius: 4px;
+}
+.admintabs { display: flex; gap: .25rem; margin-right: auto; }
+.atab {
+  padding: .5rem .9rem; background: none; border: 0; border-bottom: 3px solid transparent;
+  color: var(--muted); font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; letter-spacing: .05em;
+  cursor: pointer;
+}
+.atab:hover { color: var(--text); }
+.atab[aria-selected="true"] { color: var(--gold-hi); border-bottom-color: var(--gold); }
+.atab:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.adminbar-right { display: flex; align-items: center; gap: .75rem; }
+.admin-email { color: var(--muted); font-size: .85rem; max-width: 16rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---------- Views ---------- */
+
+.view { padding: 1.25rem clamp(.75rem, 2vw, 1.5rem) 3rem; display: grid; gap: 1rem; max-width: 96rem; margin: 0 auto; }
+
+/* ---------- Stat cards ---------- */
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr)); gap: .75rem; }
+.stat {
+  display: grid; gap: .2rem; padding: .85rem 1rem;
+  background: var(--surface); border: 1px solid var(--line-soft); border-radius: 10px;
+}
+.stat-label { color: var(--muted); font-size: .8rem; }
+.stat-value { font-family: var(--font-display); font-weight: 700; font-size: 2rem; line-height: 1; font-variant-numeric: tabular-nums; }
+
+/* ---------- Toolbar ---------- */
+
+.toolbar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: .75rem 1rem; }
+.toolbar .field-inline { align-content: start; }
+.toolbar .field-inline > label { line-height: 1.2; }
+.toolbar .field-inline > .input, .toolbar .field-inline > .select { height: 2.6rem; padding-top: 0; padding-bottom: 0; line-height: normal; }
+.toolbar input[type="search"] { -webkit-appearance: none; appearance: none; }
+.toolbar .field-inline { min-width: 11rem; }
+.toolbar .field-inline:has(input[type="search"]) { flex: 1 1 14rem; max-width: 22rem; }
+.toolbar-right { margin-left: auto; display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.updated { color: var(--muted); font-size: .8rem; }
+
+/* ---------- Tables ---------- */
+
+.table-wrap {
+  overflow-x: auto; background: var(--surface);
+  border: 1px solid var(--line-soft); border-radius: 10px;
+}
+.table-wrap:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th, td { padding: .55rem .5rem; text-align: left; white-space: nowrap; }
+thead th {
+  position: sticky; top: 0; background: var(--raised);
+  color: var(--muted); font-size: .72rem; font-weight: 600; letter-spacing: .03em; text-transform: uppercase;
+  border-bottom: 1px solid var(--line);
+}
+th[data-sort] { cursor: pointer; user-select: none; }
+th[data-sort]:hover { color: var(--text); }
+th[aria-sort="ascending"]::after { content: " \25B2"; font-size: .65em; color: var(--gold); }
+th[aria-sort="descending"]::after { content: " \25BC"; font-size: .65em; color: var(--gold); }
+tbody tr { border-bottom: 1px solid var(--line-soft); }
+tbody tr:last-child { border-bottom: 0; }
+tbody tr:hover { background: rgba(255, 255, 255, .025); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+td.mono, .mono-cell { font-family: var(--font-mono); font-size: .85rem; }
+td.name-cell { max-width: 16rem; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+td.total { font-weight: 700; color: var(--gold-hi); }
+td.actions { text-align: right; padding-left: .3rem; padding-right: .75rem; }
+td.actions .btn-small { padding: .2rem .55rem; font-size: .85rem; }
+.muted { color: var(--muted); }
+.empty { padding: 2rem 1rem; text-align: center; color: var(--muted); }
+
+.status { display: inline-block; padding: .1rem .55rem; border-radius: 999px; font-size: .78rem; font-weight: 600; border: 1px solid currentColor; }
+.status-active { color: var(--medium); }
+.status-completed { color: var(--ok); }
+.status-expired { color: var(--muted); }
+
+/* ---------- Difficulty badges (same look as the contest page) ---------- */
+
+.badge {
+  display: inline-block; padding: .1rem .55rem; border-radius: 999px;
+  font-size: .78rem; font-weight: 600; text-transform: capitalize;
+  border: 1px solid currentColor;
+}
+.badge-easy { color: var(--easy); }
+.badge-medium { color: var(--medium); }
+.badge-hard { color: var(--hard); }
+
+/* ---------- Question bank health ---------- */
+
+.bank-health { display: grid; gap: .35rem; padding: .75rem 1rem; border-radius: 10px; border: 1px solid var(--line-soft); background: var(--surface); font-size: .92rem; }
+.bank-health.is-bad { border-color: var(--danger); background: rgba(255, 107, 129, .08); }
+.bank-health strong { font-weight: 600; }
+.bank-grid { display: flex; flex-wrap: wrap; gap: .4rem .9rem; color: var(--muted); font-size: .85rem; }
+.bank-grid .short { color: #ffd3da; font-weight: 600; }
+
+/* ---------- Switch-style enabled toggle ---------- */
+
+.toggle {
+  position: relative; width: 2.5rem; height: 1.4rem; border-radius: 999px;
+  background: var(--line); border: 0; cursor: pointer; transition: background .15s;
+}
+.toggle::after {
+  content: ""; position: absolute; top: .15rem; left: .15rem; width: 1.1rem; height: 1.1rem;
+  border-radius: 50%; background: var(--text); transition: transform .15s;
+}
+.toggle[aria-checked="true"] { background: var(--ok); }
+.toggle[aria-checked="true"]::after { transform: translateX(1.1rem); background: var(--gold-ink); }
+.toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.toggle[disabled] { opacity: .5; cursor: wait; }
+
+.row-actions { display: inline-flex; gap: .4rem; }
+
+/* ---------- Dialog forms ---------- */
+
+dialog.wide { width: min(94vw, 46rem); }
+dialog.wide .dialog-body { max-height: 88dvh; overflow-y: auto; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.help { margin: 0; color: var(--muted); font-size: .82rem; }
+.help code, .field code { font-family: var(--font-mono); font-size: .85em; background: var(--editor); padding: .05rem .3rem; border-radius: 4px; }
+.opt { color: var(--muted); font-weight: 400; }
+.check { display: flex; align-items: center; gap: .6rem; cursor: pointer; }
+.check input { width: 1.1rem; height: 1.1rem; accent-color: var(--gold); }
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 720px) {
+  .adminbar { position: static; }
+  .admintabs { order: 3; width: 100%; margin-right: 0; }
+  .adminbar-right { margin-left: auto; }
+  .admin-email { display: none; }
+  .grid-2 { grid-template-columns: minmax(0, 1fr); }
+  .toolbar-right { margin-left: 0; width: 100%; }
+  .toolbar .field-inline { flex: 1 1 100%; max-width: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle, .toggle::after { transition: none; }
+}
+
+
+/* Poster-inspired admin treatment */
+.login-card, .stat, .table-wrap, .bank-health { background: linear-gradient(145deg, rgba(10,19,38,.94), rgba(4,10,21,.96)); }
+.login-card { border-radius: 4px; clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px); }
+.adminbar .brand-event { color: var(--gold-ink); background: var(--gold); box-shadow: 0 0 16px rgba(184,255,24,.16); }
+.atab[aria-selected="true"] { text-shadow: 0 0 10px rgba(184,255,24,.18); }
+.stat { border-color: #1d3858; border-radius: 4px; }
+.stat-value, td.total { color: var(--gold-hi); text-shadow: 0 0 10px rgba(184,255,24,.07); }
+.table-wrap { border-radius: 4px; }
